@@ -1,0 +1,20 @@
+<a href="#!/feeds">Back</a>
+<form ng-if="!user" ng-submit="login()">
+    <h3>Login</h3>
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <input type="email" required placeholder="Email" class="form-control" ng-model="credentials.email">
+        </div>
+        <div class="col-md-5">
+            <input type="password" required placeholder="Password" class="form-control" ng-model="credentials.password">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-block" data-loading-text="Logging in...">Login</button>
+        </div>
+    </div>
+    <br>
+</form>
+<br>
+<br>
+<button ng-if="user" class="btn btn-warning" ng-click="logout()">Logout</button>

@@ -7,12 +7,12 @@
         <div class="thumbnail">
             <img class="img-responsive" src="{{feed.image}}" alt="">
             <div class="caption">
-                <p class="lead">{{feed.body}}</p>
+                <p class="lead" style="white-space: pre;">{{feed.body}}</p>
             </div>
         </div>
     </div>
     <div ng-if="!feed.image">
-        <p class="lead">{{feed.body}}</p>
+        <p class="lead" style="white-space: pre;">{{feed.body}}</p>
         <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}}
             <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
             <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>

@@ -1,3 +1,6 @@
+
+var firebaseUrl = 'https://glowing-heat-8584.firebaseio.com/data';
+
 var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'firebase'])
     .controller('FeedsController', function($scope, $filter){
         $scope.state = 'Create';
@@ -9,7 +12,7 @@ var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
         $scope.maxSize = 5;
 
         $scope.numPages = function () {
-            return Math.ceil($scope.feedsLength / $scope.numPerPage);
+            return Math.ceil($scope.feeds.length / $scope.numPerPage);
         };
 
         $scope.setFilteredFeeds = function() {
@@ -77,6 +80,7 @@ var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             }).pop();
         }
     })
+    .controller('LoginController', function($scope, $routeParams){})
     .config(['$routeProvider', '$locationProvider', '$disqusProvider',
         function($routeProvider, $locationProvider, $disqusProvider) {
             $disqusProvider.setShortname('mybanjirinfo');
@@ -89,40 +93,47 @@ var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
                 templateUrl: 'templates/feed.html',
                 controller: 'FeedController'
             }).
+            when('/login', {
+                templateUrl: 'templates/login.html',
+                controller: 'LoginController'
+            }).
             otherwise({
                 redirectTo: '/feeds'
             });
             $locationProvider.hashPrefix('!');
         }
     ])
-    .run(function($rootScope, $firebase){
-        var ref = new Firebase("https://glowing-heat-8584.firebaseio.com/data");
-        var feedsRef = ref.child("feeds");
-        $rootScope.feedsRef = $firebase(feedsRef);
+    .run(function($rootScope, $firebase, $location){
+        $rootScope.ref = new Firebase(firebaseUrl);
+        $rootScope.feedsRef = $firebase($rootScope.ref.child("feeds"));
         $rootScope.feeds = $rootScope.feedsRef.$asArray();
-        $rootScope.feedsLength = $.map(function(v){return v}).length;
-        $rootScope.user = ref.getAuth();
+        $rootScope.user = $rootScope.ref.getAuth();
         $rootScope.moment = moment;
-        $rootScope.toggleUser = function() {
-            if(ref.getAuth()) {
-                ref.unauth();
-                $rootScope.user = null;
-            } else {
-                var email = prompt('Email');
-                var password = prompt('Password');
-                if(email && password) {
-                    ref.authWithPassword({
-                        email    : email,
-                        password : password
-                    }, function(error, authData) {
-                        if (error) {
-                            console.log("Login Failed!", error);
-                        } else {
-                            $rootScope.user = ref.getAuth();
-                            $rootScope.$apply();                }
-                    });
-                }
+        $rootScope.credentials = {email: '', password: ''};
+        $rootScope.login = function() {
+            var email = $rootScope.credentials.email;
+            var password = $rootScope.credentials.password;
+            if(email && password) {
+                $rootScope.ref.authWithPassword({
+                    email    : email,
+                    password : password
+                }, function(error, authData) {
+                    if (error) {
+                        alert('Login error');
+                    } else {
+                        $rootScope.user = $rootScope.ref.getAuth();
+                        $location.path('/feeds');
+                        $rootScope.$apply();
+                    }
+                });
             }
+        };
+        $rootScope.logout = function() {
+            $rootScope.ref.unauth(function(){
+                $rootScope.user = null;  
+                $location.path('/feeds');
+                $rootScope.$apply();  
+            });
         }
         $rootScope.slugify = function(str) {
             str = str.replace(/^\s+|\s+$/g, '').toLowerCase();
