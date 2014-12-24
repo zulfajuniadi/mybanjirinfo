@@ -18,7 +18,9 @@ var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
         $scope.setFilteredFeeds = function() {
             var begin = (($scope.currentPage - 1) * $scope.numPerPage)
             , end = begin + $scope.numPerPage;
-            $scope.filteredFeeds = $scope.feeds.slice(begin, end);
+            $scope.filteredFeeds = $scope.feeds.sort(function(a,b){
+                return a.timestamp < b.timestamp ? true: false
+            }).slice(begin, end);
         };
 
         $scope.$watch('currentPage + numPerPage + feeds.length', $scope.setFilteredFeeds);
