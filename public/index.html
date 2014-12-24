@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mybanjirinfo">
+<head>
+    <meta charset="UTF-8">
+    <title>#mybanjirinfo</title>
+    <link rel="stylesheet" href="application.css">
+    <script src="packages/jquery/dist/jquery.min.js"></script>
+    <script src="packages/angular-full/angular.min.js"></script>
+    <script src="packages/angular-full/angular-route.min.js"></script>
+    <script src="packages/firebase/firebase.js"></script>
+    <script src="packages/angularfire/dist/angularfire.js"></script>
+    <script src="packages/angular-disqus/angular-disqus.min.js"></script>
+    <script src="packages/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="packages/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="packages/moment/min/moment.min.js"></script>
+    <script src="application.js"></script>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <h1><a href="#!/feeds">#mybanjirinfo</a></h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-8" ng-view="" id="feeds"></div>
+            <div class="col-md-4">
+                <a class="twitter-timeline" href="https://twitter.com/hashtag/mybanjirinfo" data-widget-id="547771639031545857">#mybanjirinfo Tweets</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container text-center">
+            A <a href="#!/feeds" ng-click="toggleUser()"><img src="logo.png" alt=""></a> community project.
+        </div>
+    </footer>
+</body>
+</html>

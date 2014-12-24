@@ -1,0 +1,49 @@
+<ul class="list-unstyled">
+    <li ng-repeat="feed in filteredFeeds">
+        <h1><a href="#!/feed/{{feed.slug}}">{{feed.title | limitTo: 30}}</a></h1>
+        <div ng-if="feed.image">
+            <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}} by {{feed.by}}
+                <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
+                <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>
+            </i></p>
+            <div class="thumbnail">
+                <a href="#!/feed/{{feed.slug}}">
+                    <img class="img-responsive" src="{{feed.image}}" alt="">
+                </a>
+                <div class="caption">
+                    <p class="lead">{{feed.body | limitTo: 100}}...</p>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!feed.image">
+            <p class="lead">{{feed.body | limitTo: 100}}...</p>
+            <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}}
+                <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
+                <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>
+            </i></p>
+        </div>
+        <br>
+    </li>
+    <li ng-show="!feeds.length"><h3><i>No Posts Available</i></h3> <br><br></li>
+    <li ng-show="feeds.length && feeds.length / numPerPage > 1"><pagination total-items="feeds.length" items-per-page="numPerPage" ng-model="currentPage" ng-change="pageChanged()"></pagination></li>
+    <li ng-if="user">
+        <hr ng-if="feeds.length">
+        <h4>
+            <span ng-if="state=='Create'">Create New</span>
+            <span ng-if="state!='Create'">Edit Existing</span>
+             Post
+        </h4>
+        <br>
+        <form ng-submit="save()">
+            <input required type="text" class="form-control" placeholder="Title" ng-model="form.title">
+            <br>
+            <textarea required placeholder="Body" rows="5" class="form-control" ng-model="form.body"></textarea>
+            <br>
+            <input pattern="^.+\.jpg$" type="text" class="form-control" placeholder="Image URL" ng-model="form.image">
+            <br>
+            <button class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" ng-if="state!='Create'" ng-click="reset()">Cancel</button>
+        </form>
+
+    </li>
+</ul>
