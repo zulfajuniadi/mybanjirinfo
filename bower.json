@@ -1,0 +1,25 @@
+{
+  "name": "mybanjirinfo.dev",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zulfajuniadi/mybanjirinfo",
+  "authors": [
+    "Zulfa Juniadi Zulkifli <zulfajuniadi@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/packages",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-full": "~1.3.6",
+    "angularfire": "~0.9.0",
+    "bootswatch": "~3.3.1+2",
+    "angular-disqus": "kirstein/angular-disqus#~1.1.0",
+    "moment": "~2.8.4",
+    "angular-bootstrap": "~0.12.0"
+  }
+}
