@@ -1,7 +1,7 @@
 
 var firebaseUrl = 'https://glowing-heat-8584.firebaseio.com/data';
 
-var app = angular.module('mybanjirinfo', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'firebase'])
+var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'firebase'])
     .controller('FeedsController', function($scope, $filter){
         $scope.state = 'Create';
         $scope.form = {body: '', title: '', image: ''};
