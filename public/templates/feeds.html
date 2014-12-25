@@ -1,8 +1,8 @@
 <ul class="list-unstyled">
     <li ng-repeat="feed in filteredFeeds">
-        <h1><a href="#!/feed/{{feed.slug}}">{{feed.title | limitTo: 30}}</a></h1>
+        <h1><a href="#!/feed/{{feed.slug}}">{{feed.title}}</a></h1>
         <div ng-if="feed.image">
-            <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}} by {{feed.by}}
+            <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}}
                 <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
                 <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>
             </i></p>
@@ -10,9 +10,6 @@
                 <a href="#!/feed/{{feed.slug}}">
                     <img class="img-responsive" src="{{feed.image}}" alt="">
                 </a>
-                <div class="caption">
-                    <p class="lead">{{feed.body | limitTo: 100}}...</p>
-                </div>
             </div>
         </div>
         <div ng-if="!feed.image">

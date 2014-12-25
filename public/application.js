@@ -83,6 +83,11 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'fi
         }
     })
     .controller('LoginController', function($scope, $routeParams){})
+    .filter('rawHtml', ['$sce', function($sce){
+        return function(val) {
+            return $sce.trustAsHtml(val);
+        };
+    }])
     .config(['$routeProvider', '$locationProvider', '$disqusProvider',
         function($routeProvider, $locationProvider, $disqusProvider) {
             $disqusProvider.setShortname('mybanjirinfo');
@@ -136,6 +141,11 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'fi
                 $location.path('/feeds');
                 $rootScope.$apply();  
             });
+        }
+        $rootScope.nl2br = function(str, is_xhtml) {
+            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
+            return (str + '')
+                .replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
         }
         $rootScope.slugify = function(str) {
             str = str.replace(/^\s+|\s+$/g, '').toLowerCase();

@@ -6599,3 +6599,6 @@ body {
 #feeds {
   min-height: 805px;
 }
+.text-justified {
+  text-align: justify;
+}
