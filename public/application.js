@@ -1,4 +1,4 @@
-var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jmdobry.angular-cache'])
+var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jmdobry.angular-cache', 'tc.chartjs'])
 
     .controller('FeedsController', function($scope, $filter, $routeParams){
         $scope.param = $routeParams.param ? $routeParams.param.split('::') : false;
@@ -107,9 +107,49 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
     })
     .controller('RiverLevelsController', function($scope, $routeParams){})
     .controller('WeatherForecastsController', function($scope, $routeParams){})
-    .controller('FrequencyController', function($scope, $routeParams){
-
-    })
+    .controller('FrequencyController', function($scope, $routeParams){})
+    // .controller('RainLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
+    //   $scope.state = $scope.rainLevels.filter(function(state){
+    //     return state.code === $routeParams.state_code;
+    //   }).pop();
+    //   if(!$scope.state.rains.length) {
+    //     $http.get('http://www.mybanjir.com/met/met.php?states=' + $routeParams.state_code, {
+    //       cache: $angularCacheFactory.get('rainDataCache')
+    //     })
+    //     raindata = [];
+    //     .success(function(rains){
+    //       $.each(rains,function(idx,dx) {
+    //         raindata[idx]['name']('<canvas tc-chartjs-line chart-options="options" chart-data="data" auto-legend name="'+idx+'"></canvas>');
+    //       });
+    //       $scope.state.rains = rains;
+    //     })
+    //     .error(function(){
+    //       $scope.error = 'Feed unavailable at the moment'
+    //     });
+    //   }
+    //   $scope.$watch('state.rains.length', function(){
+    //     $scope.state = $scope.rainLevels.filter(function(state){
+    //       return state.code === $routeParams.state_code;
+    //     }).pop();
+    //   });
+    //   // Chart.js Options
+    //   $scope.options =  {
+    //     responsive: true,
+    //     scaleShowGridLines : true,
+    //     scaleGridLineColor : "rgba(0,0,0,.05)",
+    //     scaleGridLineWidth : 1,
+    //     bezierCurve : true,
+    //     bezierCurveTension : 0.4,
+    //     pointDot : true,
+    //     pointDotRadius : 4,
+    //     pointDotStrokeWidth : 1,
+    //     pointHitDetectionRadius : 20,
+    //     datasetStroke : true,
+    //     datasetStrokeWidth : 2,
+    //     datasetFill : true,
+    //     legendTemplate : '<ul class="tc-chart-js-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].strokeColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
+    //   };
+    // })
     .filter('fromNow', function($sce){
         return function(val) {
             console.log(val)
@@ -237,7 +277,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             cacheFlushInterval: 3600000,
             deleteOnExpire: 'aggressive'
         });
-
         $rootScope.updateFeeds = function() {
             $http.get('http://www.mybanjir.com/api/items')
                 .success(function(datas){
@@ -278,7 +317,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         $rootScope.updateFeeds();
     });
 
-(function () {
+;(function () {
     var devtools = {open: false};
     var threshold = 160;
     var emitEvent = function (state) {
