@@ -6602,3 +6602,7 @@ body {
 .text-justified {
   text-align: justify;
 }
+.header-logo {
+  width: 180px;
+  height: auto;
+}

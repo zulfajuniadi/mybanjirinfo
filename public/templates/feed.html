@@ -1,21 +1,25 @@
 <a href="#!/feeds">Back</a>
 <div ng-if="feed">
-    <h1>{{feed.title}}</h1>
-    <div ng-if="feed.image">
-        <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}}
-        </i></p>
+    <h1>{{feed.Title}}</h1>
+    <div ng-if="feed.Image">
         <div class="thumbnail">
-            <img class="img-responsive" src="{{feed.image}}" alt="">
+            <img class="img-responsive" src="{{feed.Image}}" alt="">
         </div>
-        <p class="text-justified" ng-bind-html="nl2br(feed.body) | rawHtml"></p>
+        <p class="text-justified" ng-bind-html="nl2br(feed.Body) | rawHtml"></p>
     </div>
-    <div ng-if="!feed.image">
-        <p class="text-justified" ng-bind-html="nl2br(feed.body) | rawHtml"></p>
-        <p class="text-muted"><i>{{moment(feed.timestamp).fromNow()}}
-            <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
-            <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>
-        </i></p>
+    <div ng-if="!feed.Image">
+        <p class="text-justified" ng-bind-html="nl2br(feed.Body) | rawHtml"></p>
     </div>
     <br>
-    <div disqus="feed.title"></div>
+    
+    <div ng-if="feed.Url">
+        <a class="btn btn-primary btn-sm" target="blank" href="{{feed.Url}}">View Article</a>
+        <br>
+        <br>
+    </div>
+    <p class="text-muted"><i>{{moment(feed.Timestamp).fromNow()}}
+        / <a href="#!/feeds/Source::{{(feed.Source || 'others') | encodeUrl}}">{{(feed.Source || 'others')}}</a>
+        / <a href="#!/feeds/Location::{{(feed.Location || 'others') | encodeUrl}}">{{(feed.Location || 'others') | titleCase}}</a>
+    </i></p>
+    <div disqus="feed.Title"></div>
 </div>
