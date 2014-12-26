@@ -1,0 +1,43 @@
+<a href="#!/weatherforecasts">Back</a>
+<h1>Weather Forecasts: {{state.name}}</h1>
+<br>
+<div>
+    <div class="text-center" ng-if="dateTxt">
+        <h3 ng-if="dateTxt">{{dateTxt}}</h3>
+        <br>
+        <div class="btn-group">
+            <a ng-repeat="date in dates" ng-class="classActive(date)" href="{{dateUrl(state, date)}}">
+                {{date.format('Do MMM')}}
+            </a>
+        </div>
+    </div>
+    <br>
+    <table class="table table-hover table-stripped table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Morning</th>
+                <th>Afternoon</th>
+                <th>Night</th>
+                <th>Temperature</th>
+            </tr>
+        </thead>
+        <tbody ng-if="filteredForecasts.length">
+            <tr ng-repeat="forecast in filteredForecasts">
+                <td>{{forecast.location | titleCase}}</td>
+                <td>{{forecast.morning}}</td>
+                <td>{{forecast.afternoon}}</td>
+                <td>{{forecast.night}}</td>
+                <td>{{forecast.min_temp}}°c - {{forecast.max_temp}}°c</td>
+            </tr>
+        </tbody>
+        <tbody ng-if="!filteredForecasts.length">
+            <tr>
+                <td colspan="5">
+                    <span ng-if="error">{{error}}</span>
+                    <span ng-if="!error">Loading...</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

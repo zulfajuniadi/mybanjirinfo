@@ -1,0 +1,8 @@
+<a href="#!/feeds">Back</a>
+<h1>Weather Forecasts</h1>
+<br>
+<ul class="list-unstyled row">
+    <li class="lead col-md-6" ng-repeat="weatherForecast in weatherForecasts">
+        <a href="#!/weatherforecast/{{weatherForecast.code}}">{{weatherForecast.name}}</a>
+    </li>
+</ul>
