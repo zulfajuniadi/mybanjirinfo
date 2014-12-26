@@ -272,5 +272,8 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             return str + '-' + rand;
         };
 
+        $rootScope.$on('$routeChangeSuccess', function(){
+            ga('send', 'pageview');
+        });
         $rootScope.updateFeeds();
     });
