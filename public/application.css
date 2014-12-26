@@ -6613,3 +6613,17 @@ table.table th {
   width: 80%;
   text-align: center;
 }
+.sidelinks {
+  font-size: 1.1em;
+}
+#feeds .thumbnail {
+  margin-bottom: 0px;
+  margin-top: 17px;
+  margin-right: 8px;
+}
+.feeds-image {
+  height: 124px;
+  width: 180px;
+  background-position: center center;
+  background-size: cover;
+}
