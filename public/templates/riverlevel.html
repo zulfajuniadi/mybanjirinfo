@@ -10,6 +10,7 @@
                 <th>Basin</th>
                 <th>Status</th>
                 <th>Level</th>
+                <!-- <th>Updated</th> -->
             </tr>
         </thead>
         <tbody ng-if="state.rivers.length">
@@ -23,6 +24,9 @@
                         {{river | riverStatus}}
                     </div>
                 </td>
+                <!-- <td>
+                    {{river.LastUpdateDate | fromNow}}
+                </td> -->
             </tr>
         </tbody>
         <tbody ng-if="!state.rivers.length">
