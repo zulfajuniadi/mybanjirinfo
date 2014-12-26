@@ -1,4 +1,4 @@
-var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jmdobry.angular-cache'])
+var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jmdobry.angular-cache', 'tc.chartjs'])
 
     .controller('FeedsController', function($scope, $filter, $routeParams){
 
@@ -127,6 +127,55 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
     .controller('FrequencyController', function($scope, $routeParams){
 
     })
+
+    .controller('RainLevelsController', function($scope, $routeParams){
+
+    })
+
+    .controller('RainLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
+      $scope.state = $scope.rainLevels.filter(function(state){
+        return state.code === $routeParams.state_code;
+      }).pop();
+
+      if(!$scope.state.rains.length) {
+        $http.get('http://www.mybanjir.com/met/met.php?states=' + $routeParams.state_code, {
+          cache: $angularCacheFactory.get('rainDataCache')
+        })
+        raindata = [];
+        .success(function(rains){
+          $.each(rains,function(idx,dx) {
+            raindata[idx]['name']('<canvas tc-chartjs-line chart-options="options" chart-data="data" auto-legend name="'+idx+'"></canvas>');
+          });
+          $scope.state.rains = rains;
+        })
+        .error(function(){
+          $scope.error = 'Feed unavailable at the moment'
+        });
+
+      }
+      $scope.$watch('state.rains.length', function(){
+        $scope.state = $scope.rainLevels.filter(function(state){
+          return state.code === $routeParams.state_code;
+        }).pop();
+      });
+      // Chart.js Options
+      $scope.options =  {
+        responsive: true,
+        scaleShowGridLines : true,
+        scaleGridLineColor : "rgba(0,0,0,.05)",
+        scaleGridLineWidth : 1,
+        bezierCurve : true,
+        bezierCurveTension : 0.4,
+        pointDot : true,
+        pointDotRadius : 4,
+        pointDotStrokeWidth : 1,
+        pointHitDetectionRadius : 20,
+        datasetStroke : true,
+        datasetStrokeWidth : 2,
+        datasetFill : true,
+        legendTemplate : '<ul class="tc-chart-js-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].strokeColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
+      };
+    })
     // .controller('LoginController', function($scope, $routeParams){})
 
     .filter('rawHtml', ['$sce', function($sce){
@@ -194,6 +243,14 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 templateUrl: 'templates/login.html',
                 controller: 'LoginController'
             }).
+            when('/rainlevels', {
+              templateUrl: 'templates/rainlevels.html',
+              controller: 'RainLevelsController'
+            }).
+            when('/rainlevel/:state_code', {
+                templateUrl: 'templates/rainlevel.html',
+                controller: 'RainLevelController'
+            }).
             otherwise({
                 redirectTo: '/feeds'
             });
@@ -217,13 +274,34 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             {name: 'Sarawak', code: 'SRK', rivers: []},
             {name: 'Sabah', code: 'SAB', rivers: []},
             ];
+        $rootScope.rainLevels = [{name: 'Perlis', code: 'perlis', rains: []},
+            {name: 'Kedah', code: 'kedah', rains: []},
+            {name: 'Pulau Pinang', code: 'pulau pinang', rains: []},
+            {name: 'Perak', code: 'perak', rains: []},
+            {name: 'Selangor', code: 'selangor', rains: []},
+            {name: 'KL', code: 'kuala lumpur', rains: []},
+            {name: 'Negeri Sembilan', code: 'negeri sembilan', rains: []},
+            {name: 'Melaka', code: 'melaka', rains: []},
+            {name: 'Johor', code: 'johor', rains: []},
+            {name: 'Pahang', code: 'pahang', rains: []},
+            {name: 'Terengganu', code: 'terengganu', rains: []},
+            {name: 'Kelantan', code: 'kelantan', rains: []},
+            {name: 'Sarawak', code: 'sarawak', rains: []},
+            {name: 'Sabah', code: 'sabah', rains: []},
+            ];
+
         $rootScope.moment = moment;
         $rootScope.credentials = {email: '', password: ''};
 
         $angularCacheFactory('riverDataCache', {
-            maxAge: 900000, // Items added to this cache expire after 15 minutes.
-            cacheFlushInterval: 3600000, // This cache will clear itself every hour.
-            deleteOnExpire: 'aggressive' // Items will be deleted from this cache right when they expire.
+          maxAge: 900000, // Items added to this cache expire after 15 minutes.
+          cacheFlushInterval: 3600000, // This cache will clear itself every hour.
+          deleteOnExpire: 'aggressive' // Items will be deleted from this cache right when they expire.
+        });
+        $angularCacheFactory('rainDataCache', {
+          maxAge: 900000, // Items added to this cache expire after 15 minutes.
+          cacheFlushInterval: 3600000, // This cache will clear itself every hour.
+          deleteOnExpire: 'aggressive' // Items will be deleted from this cache right when they expire.
         });
 
 
@@ -248,9 +326,9 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         // };
         // $rootScope.logout = function() {
         //     $rootScope.ref.unauth(function(){
-        //         $rootScope.user = null;  
+        //         $rootScope.user = null;
         //         $location.path('/feeds');
-        //         $rootScope.$apply();  
+        //         $rootScope.$apply();
         //     });
         // }
         $rootScope.updateFeeds = function() {

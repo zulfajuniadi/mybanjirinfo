@@ -1,0 +1,8 @@
+<a href="#!/feeds">Back</a>
+<h1>Rain Levels</h1>
+<br>
+<ul class="list-unstyled row">
+    <li class="lead col-md-6" ng-repeat="level in rainLevels">
+        <a href="#!/rainlevel/{{level.code}}">{{level.name}}</a>
+    </li>
+</ul>

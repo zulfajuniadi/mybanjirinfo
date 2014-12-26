@@ -1,0 +1,20 @@
+<a href="#!/rainlevels">Back</a>
+<h1>Rain Levels: {{state.name}}</h1>
+<br>
+<div>
+    <table class="table">
+        <tbody ng-if="state.rains.length">
+            <tr ng-repeat="rain in state.rains">
+                <td>{{rain.name}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-if="!state.rains.length">
+            <tr>
+                <td colspan="5">
+                    <span ng-if="error">{{error}}</span>
+                    <span ng-if="!error">Loading...</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
