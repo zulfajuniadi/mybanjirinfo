@@ -124,6 +124,9 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             }).pop();
         });
     })
+    .controller('FrequencyController', function($scope, $routeParams){
+
+    })
     // .controller('LoginController', function($scope, $routeParams){})
 
     .filter('rawHtml', ['$sce', function($sce){
@@ -183,10 +186,10 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 templateUrl: 'templates/riverlevel.html',
                 controller: 'RiverLevelController'
             }).
-            // when('/login', {
-            //     templateUrl: 'templates/login.html',
-            //     controller: 'LoginController'
-            // }).
+            when('/frequencies', {
+                templateUrl: 'templates/frequencies.html',
+                controller: 'FrequencyController'
+            }).
             when('/login', {
                 templateUrl: 'templates/login.html',
                 controller: 'LoginController'
