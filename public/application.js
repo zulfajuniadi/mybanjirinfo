@@ -312,7 +312,9 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         };
 
         $rootScope.$on('$routeChangeSuccess', function(){
-            ga('send', 'pageview');
+            ga('send', 'pageview', {
+               'page': location.pathname + location.search  + location.hash
+            });
         });
         $rootScope.updateFeeds();
     });
