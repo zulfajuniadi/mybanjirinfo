@@ -1,13 +1,12 @@
-\#mybanjirinfo
-============
+<a href="http://mybanjir.com/" target="blank"><img src="http://mybanjir.com/public/logo-header.png"></a>
 
-
-Features for now:
-
-1. Post events and images
-1. Follow twitter
+Live site on [mybanjir.com](http://mybanjir.com/).
 
 Installation:
 
-1. The web app is using firebase as the backend, so you just need to serve the index.html file.
-1. Point your webroot to the public folder.
+The web app is using json backend, so you just need to serve the index.html file in the public/ directory.
+
+
+
+Community project brought to you by:<br/>
+<a href="http://www.mymagic.my/" target="blank"><img src="http://mybanjir.com/public/logo.png" style="display:inline; vertical-align:middle"></a>
