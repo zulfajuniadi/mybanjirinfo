@@ -1,7 +1,4 @@
-
-var firebaseUrl = 'https://glowing-heat-8584.firebaseio.com/data';
-
-var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
+var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jmdobry.angular-cache'])
 
     .controller('FeedsController', function($scope, $filter, $routeParams){
 
@@ -26,7 +23,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
             var begin = (($scope.currentPage - 1) * $scope.numPerPage)
             , end = begin + $scope.numPerPage;
             $scope.filteredFeeds = $scope.feeds.sort(function(a,b){
-                return (new Date(a.Timestamp)).getTime() < (new Date(b.Timestamp)).getTime() ? true: false
+                return (new Date(a.Timestamp)).getTime() < (new Date(b.Timestamp)).getTime() ? 1: -1
             }).filter(function(feed){
                 if($scope.param) {
                     return (feed[$scope.param[0]] || 'others') === $scope.param[1].replace(/_/g, ' ');
@@ -93,7 +90,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
         //     $scope.reset();
         // }
     })
-
     .controller('FeedController', function($scope, $routeParams){
         if($routeParams.ID) {
             $scope.$watch('feeds.length', function(){
@@ -103,7 +99,32 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
             });
         }
     })
-    .controller('LoginController', function($scope, $routeParams){})
+    .controller('RiverLevelsController', function($scope, $routeParams){
+
+    })
+    .controller('RiverLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
+        $scope.state = $scope.riverLevels.filter(function(state){
+            return state.code === $routeParams.state_code;
+        }).pop();
+        if(!$scope.state.rivers.length) {
+            $http.get('http://www.mybanjir.com/api/riverlevel/' + $routeParams.state_code, {
+                cache: $angularCacheFactory.get('riverDataCache')
+            })
+                .success(function(rivers){
+                    $scope.state.rivers = rivers;
+                })
+                .error(function(){
+                    $scope.error = 'Feed unavailable at the moment'
+                });
+
+        }
+        $scope.$watch('state.rivers.length', function(){
+            $scope.state = $scope.riverLevels.filter(function(state){
+                return state.code === $routeParams.state_code;
+            }).pop();
+        });
+    })
+    // .controller('LoginController', function($scope, $routeParams){})
 
     .filter('rawHtml', ['$sce', function($sce){
         return function(val) {
@@ -120,6 +141,28 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
             return val.replace(/\s+/g, '_');
         };
     })
+    .filter('riverStatusClass', function(){
+        return function(river) {
+            if(river.RiverLevel <= river.AlertLevel)
+                return  'label-success';
+            if(river.RiverLevel <= river.WarningLevel)
+                return 'label-info';
+            if(river.RiverLevel <= river.DangerLevel)
+                return 'label-warning';
+            return 'label-danger';
+        };
+    })
+    .filter('riverStatus', function(){
+        return function(river) {
+            if(river.RiverLevel <= river.AlertLevel)
+                return  'Normal';
+            if(river.RiverLevel <= river.WarningLevel)
+                return 'Alert';
+            if(river.RiverLevel <= river.DangerLevel)
+                return 'Warning';
+            return 'Danger';
+        };
+    })
     .config(['$routeProvider', '$locationProvider', '$disqusProvider',
         function($routeProvider, $locationProvider, $disqusProvider) {
             $disqusProvider.setShortname('mybanjirinfo');
@@ -132,6 +175,18 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
                 templateUrl: 'templates/feed.html',
                 controller: 'FeedController'
             }).
+            when('/riverlevels', {
+                templateUrl: 'templates/riverlevels.html',
+                controller: 'RiverLevelsController'
+            }).
+            when('/riverlevel/:state_code', {
+                templateUrl: 'templates/riverlevel.html',
+                controller: 'RiverLevelController'
+            }).
+            // when('/login', {
+            //     templateUrl: 'templates/login.html',
+            //     controller: 'LoginController'
+            // }).
             when('/login', {
                 templateUrl: 'templates/login.html',
                 controller: 'LoginController'
@@ -142,35 +197,59 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap'])
             $locationProvider.hashPrefix('!');
         }
     ])
-    .run(function($rootScope, $location, $http){
+    .run(function($rootScope, $location, $http, $angularCacheFactory){
         $rootScope.feeds = [];
+        $rootScope.riverLevels = [{name: 'Perlis', code: 'PEL', rivers: []},
+            {name: 'Kedah', code: 'KDH', rivers: []},
+            {name: 'Pulau Pinang', code: 'PNG', rivers: []},
+            {name: 'Perak', code: 'PRK', rivers: []},
+            {name: 'Selangor', code: 'SEL', rivers: []},
+            {name: 'KL', code: 'WLH', rivers: []},
+            {name: 'Negeri Sembilan', code: 'NSN', rivers: []},
+            {name: 'Melaka', code: 'MLK', rivers: []},
+            {name: 'Johor', code: 'JHR', rivers: []},
+            {name: 'Pahang', code: 'PHG', rivers: []},
+            {name: 'Terengganu', code: 'TRG', rivers: []},
+            {name: 'Kelantan', code: 'KEL', rivers: []},
+            {name: 'Sarawak', code: 'SRK', rivers: []},
+            {name: 'Sabah', code: 'SAB', rivers: []},
+            ];
         $rootScope.moment = moment;
         $rootScope.credentials = {email: '', password: ''};
-        $rootScope.login = function() {
-            var email = $rootScope.credentials.email;
-            var password = $rootScope.credentials.password;
-            if(email && password) {
-                $rootScope.ref.authWithPassword({
-                    email    : email,
-                    password : password
-                }, function(error, authData) {
-                    if (error) {
-                        alert('Login error');
-                    } else {
-                        $rootScope.user = $rootScope.ref.getAuth();
-                        $location.path('/feeds');
-                        $rootScope.$apply();
-                    }
-                });
-            }
-        };
-        $rootScope.logout = function() {
-            $rootScope.ref.unauth(function(){
-                $rootScope.user = null;  
-                $location.path('/feeds');
-                $rootScope.$apply();  
-            });
-        }
+
+        $angularCacheFactory('riverDataCache', {
+            maxAge: 900000, // Items added to this cache expire after 15 minutes.
+            cacheFlushInterval: 3600000, // This cache will clear itself every hour.
+            deleteOnExpire: 'aggressive' // Items will be deleted from this cache right when they expire.
+        });
+
+
+
+        // $rootScope.login = function() {
+        //     var email = $rootScope.credentials.email;
+        //     var password = $rootScope.credentials.password;
+        //     if(email && password) {
+        //         $rootScope.ref.authWithPassword({
+        //             email    : email,
+        //             password : password
+        //         }, function(error, authData) {
+        //             if (error) {
+        //                 alert('Login error');
+        //             } else {
+        //                 $rootScope.user = $rootScope.ref.getAuth();
+        //                 $location.path('/feeds');
+        //                 $rootScope.$apply();
+        //             }
+        //         });
+        //     }
+        // };
+        // $rootScope.logout = function() {
+        //     $rootScope.ref.unauth(function(){
+        //         $rootScope.user = null;  
+        //         $location.path('/feeds');
+        //         $rootScope.$apply();  
+        //     });
+        // }
         $rootScope.updateFeeds = function() {
             $http.get('http://www.mybanjir.com/api/items')
                 .success(function(datas){

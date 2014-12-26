@@ -6602,7 +6602,10 @@ body {
 .text-justified {
   text-align: justify;
 }
-.header-logo {
-  width: 180px;
-  height: auto;
+table.table th {
+  text-align: center;
+}
+.label.label-block {
+  display: block;
+  padding: 0.8em .6em 0.8em;
 }

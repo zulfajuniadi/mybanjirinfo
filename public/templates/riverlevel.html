@@ -1,0 +1,37 @@
+<a href="#!/riverlevels">Back</a>
+<h1>River Levels: {{state.name}}</h1>
+<br>
+<div>
+    <table class="table table-hover table-stripped table-bordered text-center">
+        <thead>
+            <tr>
+                <th>District</th>
+                <th>Station</th>
+                <th>Basin</th>
+                <th>Status</th>
+                <th>Level</th>
+            </tr>
+        </thead>
+        <tbody ng-if="state.rivers.length">
+            <tr ng-repeat="river in state.rivers">
+                <td>{{river.District}}</td>
+                <td>{{river.StationName}}</td>
+                <td>{{river.RiverBasin}}</td>
+                <td>{{river.RiverLevel}}</td>
+                <td>
+                    <div class="label {{river | riverStatusClass}} label-block">
+                        {{river | riverStatus}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tbody ng-if="!state.rivers.length">
+            <tr>
+                <td colspan="5">
+                    <span ng-if="error">{{error}}</span>
+                    <span ng-if="!error">Loading...</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
