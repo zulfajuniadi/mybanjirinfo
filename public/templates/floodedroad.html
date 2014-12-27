@@ -1,0 +1,29 @@
+<a href="#!/floodedroads">Back</a>
+<h1>Flood Affected Roads: {{state.name}}</h1>
+<br>
+<div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Road Name</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody ng-if="state.roads.length">
+            <tr ng-repeat="road in state.roads">
+                <td>{{road.road}}</td>
+                <td>{{road.status}}</td>
+                <td>{{road.notes}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-if="!state.roads.length">
+            <tr>
+                <td colspan="5">
+                    <span ng-if="error">{{error}}</span>
+                    <span ng-if="!error">Loading...</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

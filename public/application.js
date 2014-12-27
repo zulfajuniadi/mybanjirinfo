@@ -105,9 +105,33 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         }
 
     })
+    .controller('FloodedRoadController', function($scope, $routeParams, $http, $angularCacheFactory){
+        $scope.state = $scope.floodedRoads.filter(function(state){
+            return state.code === $routeParams.state_code;
+        }).pop();
+        if(!$scope.state.roads.length) {
+            $http.get('http://node.globalresearch.my/mybanjir/ws.BencanaJKR.php?function=getBencanaJKR&output=json&state_code=' + $routeParams.state_code, {
+                cache: $angularCacheFactory.get('floodedRoadsCache')
+            })
+            .success(function(roads){
+                $scope.state.roads = roads;
+                if(roads.length === 0)
+                    $scope.error = 'No data found'
+            })
+            .error(function(){
+                $scope.error = 'Feed unavailable at the moment'
+            });
+        }
+        $scope.$watch('state.roads.length', function(){
+            $scope.state = $scope.floodedRoads.filter(function(state){
+                return state.code === $routeParams.state_code;
+            }).pop();
+        });
+    })
     .controller('RiverLevelsController', function($scope, $routeParams){})
     .controller('WeatherForecastsController', function($scope, $routeParams){})
     .controller('FrequencyController', function($scope, $routeParams){})
+    .controller('FloodedRoadsController', function($scope, $routeParams){})
     // .controller('RainLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
     //   $scope.state = $scope.rainLevels.filter(function(state){
     //     return state.code === $routeParams.state_code;
@@ -221,6 +245,14 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 templateUrl: 'templates/weatherforecast.html',
                 controller: 'WeatherForecastController'
             }).
+            when('/floodedroads', {
+                templateUrl: 'templates/floodedroads.html',
+                controller: 'FloodedRoadsController'
+            }).
+            when('/floodedroad/:state_code', {
+                templateUrl: 'templates/floodedroad.html',
+                controller: 'FloodedRoadController'
+            }).
             when('/frequencies', {
                 templateUrl: 'templates/frequencies.html',
                 controller: 'FrequencyController'
@@ -238,7 +270,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             {name: 'Pulau Pinang', code: 'PNG', rivers: []},
             {name: 'Perak', code: 'PRK', rivers: []},
             {name: 'Selangor', code: 'SEL', rivers: []},
-            {name: 'KL', code: 'WLH', rivers: []},
+            {name: 'WP Kuala Lumpur', code: 'WLH', rivers: []},
             {name: 'Negeri Sembilan', code: 'NSN', rivers: []},
             {name: 'Melaka', code: 'MLK', rivers: []},
             {name: 'Johor', code: 'JHR', rivers: []},
@@ -253,7 +285,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             {name: 'Pulau Pinang', code: 'pulau pinang', forecasts: {}},
             {name: 'Perak', code: 'perak', forecasts: {}},
             {name: 'Selangor', code: 'selangor', forecasts: {}},
-            {name: 'KL', code: 'kuala lumpur', forecasts: {}},
+            {name: 'WP Kuala Lumpur', code: 'kuala lumpur', forecasts: {}},
             {name: 'Negeri Sembilan', code: 'negeri sembilan', forecasts: {}},
             {name: 'Melaka', code: 'melaka', forecasts: {}},
             {name: 'Johor', code: 'johor', forecasts: {}},
@@ -263,10 +295,33 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             {name: 'Sarawak', code: 'sarawak', forecasts: {}},
             {name: 'Sabah', code: 'sabah', forecasts: {}},
         ];
+        $rootScope.floodedRoads = [{name: 'Perlis', code: '09', roads: []},
+            {name: 'Kedah', code: '02', roads: []},
+            {name: 'Pulau Pinang', code: '07', roads: []},
+            {name: 'Perak', code: '08', roads: []},
+            {name: 'Selangor', code: '10', roads: []},
+            {name: 'WP Kuala Lumpur', code: '14', roads: []},
+            {name: 'Negeri Sembilan', code: '05', roads: []},
+            {name: 'Melaka', code: '04', roads: []},
+            {name: 'Johor', code: '01', roads: []},
+            {name: 'Pahang', code: '06', roads: []},
+            {name: 'Terengganu', code: '11', roads: []},
+            {name: 'Kelantan', code: '03', roads: []},
+            {name: 'Sarawak', code: '13', roads: []},
+            {name: 'Sabah', code: '12', roads: []},
+            {name: 'WP Putrajaya', code: '16', roads: []},
+            {name: 'WP Labuan', code: '15', roads: []},
+        ];
         $rootScope.moment = moment;
         $rootScope.credentials = {email: '', password: ''};
 
         $angularCacheFactory('riverDataCache', {
+            maxAge: 900000,
+            cacheFlushInterval: 3600000,
+            deleteOnExpire: 'aggressive'
+        });
+
+        $angularCacheFactory('floodedRoadsCache', {
             maxAge: 900000,
             cacheFlushInterval: 3600000,
             deleteOnExpire: 'aggressive'
