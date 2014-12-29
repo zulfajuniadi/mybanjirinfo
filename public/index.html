@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en" ng-app="mybanjir">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
     <title>#mybanjir</title>
-    <link rel="stylesheet" href="application.css">
+    <link href="application.css" rel="stylesheet">
     <script src="packages/jquery/dist/jquery.min.js"></script>
     <script src="packages/angular-full/angular.min.js"></script>
     <script src="packages/angular-full/angular-route.min.js"></script>
@@ -16,81 +18,116 @@
     <script src="packages/moment/min/moment.min.js"></script>
     <script src="application.js"></script>
 </head>
+
 <body>
     <div class="container">
         <br>
+
         <header>
             <div class="row">
                 <div class="col-md-8">
-                    <a href="#!/feeds">
-                        <img class="header-logo" src="logo-header.png" alt="">
-                    </a>
+                    <a href="#!/feeds"><img alt="" class="header-logo" src=
+                    "logo-header.png"></a>
                 </div>
+
                 <div class="col-md-4 text-center hidden-xs hidden-sm">
-                    <a target="blank" href="http://www.portalbencana.mkn.gov.my"><img class="mkn-banner" src="mkn-banner.jpg" alt=""></a>
+                    <a href="http://www.portalbencana.mkn.gov.my" target=
+                    "blank"><img alt="" class="mkn-banner" src=
+                    "mkn-banner.jpg"></a>
                 </div>
             </div>
-        </header>
-        <br>
+        </header><br>
+
         <div class="row">
-            <div class="col-md-8" ng-view="" id="feeds"></div>
+            <div class="col-md-8" ng-view="" autoscroll="true" id="feeds"></div>
+
             <div class="col-md-4">
                 <!-- <a target="blank" href="https://www.billplz.com/open/5y58hBei" class="btn btn-success btn-lg btn-block">#mybanjir Donations</a>
                 <div class="text-center">
                     <a href="http://goo.gl/q5PbCI">Donations received</a>
                 </div>
                 <br> -->
+
                 <ul class="list-group sidelinks lead text-center">
-                    <li class="list-group-item active">Info Banjir</i></li>
+                    <li class="list-group-item active">Info Banjir</li>
+
                     <li class="list-group-item">
                         <a href="#!/riverlevels">River Levels</a>
                     </li>
+
                     <li class="list-group-item">
                         <a href="#!/weatherforecasts">Weather Forecast</a>
                     </li>
+
                     <li class="list-group-item">
                         <a href="#!/floodedroads">Flood Affected Roads</a>
                     </li>
+
                     <li class="list-group-item">
                         <a href="#!/frequencies">CB Radio Fequencies</a>
                     </li>
                 </ul>
+
                 <ul class="list-group sidelinks lead text-center">
-                    <li class="list-group-item active"><i class="glyphicon glyphicon-new-window"></i> External Links </li>
+                    <li class="list-group-item active"><i class=
+                    "glyphicon glyphicon-new-window"></i> External Links</li>
+
                     <li class="list-group-item">
-                        <a target="blank" href="https://docs.google.com/a/mymagic.com.my/spreadsheets/d/19uN4XUTCabYtvMkPYxRcKKD-ByGMLwwXP6l5ON2XFVg/edit?usp=sharing">Relief Agencies</a>
+                        <a href=
+                        "https://docs.google.com/a/mymagic.com.my/spreadsheets/d/19uN4XUTCabYtvMkPYxRcKKD-ByGMLwwXP6l5ON2XFVg/edit?usp=sharing"
+                        target="blank">Relief Agencies</a>
                     </li>
+
                     <li class="list-group-item">
-                        <a target="blank" href="http://sms13999.skmm.gov.my/info.aspx">SMS Donation @ Tabung SKMM</a>
+                        <a href="http://sms13999.skmm.gov.my/info.aspx" target=
+                        "blank">SMS Donation @ Tabung SKMM</a>
                     </li>
-                </ul>
-                
-                <br>
+                </ul><br>
+
                 <div class="panel panel-primary">
-                    <div class="panel-heading text-center">SMS Service</div>
-                    <div class="panel-body text-justified">This is a community service by mybanjir.com together with Celcom First where we are trying to send SMS to the flood victims and the search and rescue team in order to determine the current situation and location. We hope that you could give us the right information for us to disseminate via SMS.
+                    <div class="panel-heading text-center">
+                        SMS Service
+                    </div>
+
+                    <div class="panel-body text-justified">
+                        This is a community service by mybanjir.com together
+                        with Celcom First where we are trying to send SMS to
+                        the flood victims and the search and rescue team in
+                        order to determine the current situation and location.
+                        We hope that you could give us the right information
+                        for us to disseminate via SMS.<br>
                         <br>
+                        Ini adalah khidmat komuniti oleh mybanjir.com dengan
+                        Celcom dimana kami akan mencuba untuk menghantar SMS
+                        kepada mangsa dan juga pasukan penyelamat untuk
+                        mengenal pasti keadaan dan lokasi mereka. Kami berhapan
+                        tuan/puan dapat memberikan maklumat yang tepat untuk
+                        kami sebarkan.<br>
                         <br>
-                        Ini adalah khidmat komuniti oleh mybanjir.com dengan Celcom dimana kami akan mencuba untuk menghantar SMS kepada mangsa dan juga pasukan penyelamat untuk mengenal pasti keadaan dan lokasi mereka. Kami berhapan tuan/puan dapat memberikan maklumat yang tepat untuk kami sebarkan.
-                        <br>
-                        <br>
+
                         <div class="text-center">
-                            <a href="http://goo.gl/forms/h0bSdG4X25" class="btn btn-success" target="blank">SMS Form <i class="glyphicon glyphicon-new-window"></i></a>
+                            <a class="btn btn-success" href=
+                            "http://goo.gl/forms/h0bSdG4X25" target="blank">SMS
+                            Form <i class=
+                            "glyphicon glyphicon-new-window"></i></a>
                         </div>
                     </div>
-                </div>
-                <a class="twitter-timeline" href="https://twitter.com/hashtag/mybanjir" data-widget-id="547771639031545857">#mybanjir Tweets</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                </div><a class="twitter-timeline" data-widget-id=
+                "547771639031545857" href=
+                "https://twitter.com/hashtag/mybanjir">#mybanjir Tweets</a>
+                <script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                </script>
             </div>
         </div>
     </div>
+
     <footer>
         <div class="container text-center">
-            A <img src="logo.png" alt=""> community project.
+            A <img alt="" src="logo.png"> community project.
         </div>
-    </footer>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    </footer><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
