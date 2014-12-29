@@ -20,8 +20,8 @@
                 <td>{{river.basin}}</td>
                 <td>{{river.current_level}}</td>
                 <td>
-                    <div class="label {{river | riverStatusClass}} label-block">
-                        {{river | riverStatus}}
+                    <div class="label {{river.status | riverStatusClass}} label-block">
+                        {{river.status | titleCase}}
                     </div>
                 </td>
                 <td>

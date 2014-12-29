@@ -1,0 +1,44 @@
+<a href="#!/riverlevels">Back</a>
+<h1>River Alerts</h1>
+<br>
+<br>
+<table class="table table-hover table-stripped table-bordered text-center">
+    <thead>
+        <tr>
+            <th>State</th>
+            <th>District</th>
+            <th>Station</th>
+            <th>Basin</th>
+            <th>Level</th>
+            <th>Status</th>
+            <th>Updated</th>
+        </tr>
+    </thead>
+    <tbody ng-if="alerts.length">
+        <tr ng-repeat="river in alerts | orderBy : 'state'">
+            <td>
+                <a href="#!/riverlevel/{{river.state}}">{{river.state}}</a>
+            </td>
+            <td>{{river.district}}</td>
+            <td>{{river.name}}</td>
+            <td>{{river.basin}}</td>
+            <td>{{river.current_level}}</td>
+            <td>
+                <div class="label {{river.status | riverStatusClass}} label-block">
+                    {{river.status | titleCase}}
+                </div>
+            </td>
+            <td>
+                {{river.updated_at | fromNow}}
+            </td>
+        </tr>
+    </tbody>
+    <tbody ng-if="!alerts.length">
+        <tr>
+            <td colspan="7">
+                <span ng-if="error">{{error}}</span>
+                <span ng-if="!error">Loading...</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

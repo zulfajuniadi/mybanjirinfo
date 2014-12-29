@@ -38,6 +38,18 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             });
         }   
     })
+    .controller('RiverLevelsController', function($scope, $routeParams){})
+    .controller('RiverAlertsController', function($scope, $routeParams, $http){
+        $http.get('http://riverlevels.zulfajuniadi.com/rivers/alerts')
+            .success(function(alerts){
+                $scope.alerts = alerts;
+                if(alerts.length === 0)
+                    $scope.error = 'No data found'
+            })
+            .error(function(){
+                $scope.error = 'Feed unavailable at the moment'
+            });
+    })
     .controller('RiverLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
         $scope.state = $scope.riverLevels.filter(function(state){
             return state.code === $routeParams.state_code;
@@ -149,7 +161,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 });
         }
     })
-    .controller('RiverLevelsController', function($scope, $routeParams){})
     .controller('WeatherForecastsController', function($scope, $routeParams){})
     .controller('FrequencyController', function($scope, $routeParams){})
     .controller('FloodedRoadsController', function($scope, $routeParams){})
@@ -216,25 +227,14 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         };
     })
     .filter('riverStatusClass', function(){
-        return function(river) {
-            if(river.current_level <= river.alert_level)
+        return function(status) {
+            if(status === 'normal')
                 return  'label-success';
-            if(river.current_level <= river.warning_level)
+            else if(status === 'alert')
                 return 'label-info';
-            if(river.current_level <= river.danger_level)
+            else if(status === 'warning')
                 return 'label-warning';
             return 'label-danger';
-        };
-    })
-    .filter('riverStatus', function(){
-        return function(river) {
-            if(river.current_level <= river.alert_level)
-                return  'Normal';
-            if(river.current_level <= river.warning_level)
-                return 'Alert';
-            if(river.current_level <= river.danger_level)
-                return 'Warning';
-            return 'Danger';
         };
     })
     .config(['$routeProvider', '$locationProvider', '$disqusProvider',
@@ -249,17 +249,21 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 templateUrl: 'templates/feed.html',
                 controller: 'FeedController'
             }).
+            when('/riverlevels/alerts', {
+                templateUrl: 'templates/riveralerts.html',
+                controller: 'RiverAlertsController' 
+            }).
             when('/riverlevels', {
                 templateUrl: 'templates/riverlevels.html',
                 controller: 'RiverLevelsController'
             }).
-            when('/dropoffpoints', {
-                templateUrl: 'templates/dropoffpoints.html',
-                controller: 'DropoffPointsController'
-            }).
             when('/riverlevel/:state_code', {
                 templateUrl: 'templates/riverlevel.html',
                 controller: 'RiverLevelController'
+            }).
+            when('/dropoffpoints', {
+                templateUrl: 'templates/dropoffpoints.html',
+                controller: 'DropoffPointsController'
             }).
             when('/weatherforecasts', {
                 templateUrl: 'templates/weatherforecasts.html',
