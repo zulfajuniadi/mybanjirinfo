@@ -1,6 +1,9 @@
 <a href="#!/floodedroads">Back</a>
 <h1>Flood Affected Roads: {{state.name}}</h1>
 <br>
+<input type="search" ng-model="search" placeholder="Search">
+<br>
+<br>
 <div>
     <table class="table table-bordered table-hover table-striped">
         <thead>
@@ -11,7 +14,7 @@
             </tr>
         </thead>
         <tbody ng-if="state.roads.length">
-            <tr ng-repeat="road in state.roads">
+            <tr ng-repeat="road in state.roads | filter:search">
                 <td>{{road.road}}</td>
                 <td>{{road.status}}</td>
                 <td>{{road.notes}}</td>
@@ -27,3 +30,7 @@
         </tbody>
     </table>
 </div>
+
+<p class="lead text-center">
+    To add more to this list, please contact<br/><a href="mailto:syahrul@mymagic.my">syahrul@mymagic.my</a> or <a href="mailto:amir@mymagic.my">amir@mymagic.my</a>
+</p>
