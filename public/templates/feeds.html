@@ -1,6 +1,8 @@
 <a ng-if="param" href="#!/feeds">Back</a>
 <iframe ng-if="!param" src="https://google.org/crisismap/weather_and_events?hl=en&llbox=7.279%2C0.322%2C111.147%2C96.14&t=ROADMAP&layers=layer9%2Clayer8%2C2%2C45%2C47%2C46%2C48%2C1340721268837%2C1340721332252%3A74%2C10%2C11%2C1324667074540&embedded=true" width="100%" height="480px" frameborder="0"></iframe>
-<h2>News Aggregate</h2>
+<h2>
+    News Aggregate
+</h2>
 <ul class="media-list">
     <li ng-repeat="feed in filteredFeeds"  class="media">
         <div>
@@ -11,35 +13,12 @@
         <div class="media-body">
             <h3><a class="media-heading" href="#!/feed/{{feed.ID}}">{{feed.Title}}</a></h3>
             <p>{{feed.Body | limitTo: 500}}...</p>
-            <p class="text-muted"><i>{{moment(feed.Timestamp).fromNow()}}
+            <p class="text-muted"><i>{{feed.Timestamp | fromNow}}
                 / <a href="#!/feeds/Source::{{(feed.Source || 'others') | encodeUrl}}">{{(feed.Source || 'others')}}</a>
                 / <a href="#!/feeds/Location::{{(feed.Location || 'others') | encodeUrl}}">{{(feed.Location || 'others') | titleCase}}</a>
-                <span ng-if="user"> / <a ng-click="edit(feed)" href="#!/feeds">Edit</a></span>
-                <span ng-if="user"> / <a ng-click="delete(feed)" href="#!/feeds">Delete</a></span>
             </i></p>
         </div>
         <div class="clearfix"></div>
     </li>
-</ul>
-<ul class="list-unstyled">
     <li ng-show="filteredFeedsLength && filteredFeedsLength / numPerPage > 1" class="text-center"><pagination total-items="filteredFeedsLength" max-size="maxSize" items-per-page="numPerPage" ng-model="currentPage" ng-change="pageChanged()"></pagination></li>
-    <li ng-if="user">
-        <hr ng-if="filteredFeedsLength">
-        <h4>
-            <span ng-if="state=='Create'">Create New</span>
-            <span ng-if="state!='Create'">Edit Existing</span>
-             Post
-        </h4>
-        <br>
-        <form ng-submit="save()">
-            <input required type="text" class="form-control" placeholder="Title" ng-model="form.Title">
-            <br>
-            <textarea required placeholder="Body" rows="5" class="form-control" ng-model="form.Body"></textarea>
-            <br>
-            <input pattern="^.+\.jpg$" type="text" class="form-control" placeholder="Image URL" ng-model="form.Image">
-            <br>
-            <button class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-default" ng-if="state!='Create'" ng-click="reset()">Cancel</button>
-        </form>
-    </li>
 </ul>
