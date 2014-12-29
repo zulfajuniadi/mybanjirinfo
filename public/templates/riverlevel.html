@@ -10,29 +10,28 @@
                 <th>Basin</th>
                 <th>Level</th>
                 <th>Status</th>
-                <!--  -->
-                <!-- <th>Updated</th> -->
+                <th>Updated</th>
             </tr>
         </thead>
         <tbody ng-if="state.rivers.length">
             <tr ng-repeat="river in state.rivers">
-                <td>{{river.District}}</td>
-                <td>{{river.StationName}}</td>
-                <td>{{river.RiverBasin}}</td>
-                <td>{{river.RiverLevel}}</td>
+                <td>{{river.district}}</td>
+                <td>{{river.name}}</td>
+                <td>{{river.basin}}</td>
+                <td>{{river.current_level}}</td>
                 <td>
                     <div class="label {{river | riverStatusClass}} label-block">
                         {{river | riverStatus}}
                     </div>
                 </td>
-                <!-- <td>
-                    {{river.LastUpdateDate | fromNow}}
-                </td> -->
+                <td>
+                    {{river.updated_at | fromNow}}
+                </td>
             </tr>
         </tbody>
         <tbody ng-if="!state.rivers.length">
             <tr>
-                <td colspan="5">
+                <td colspan="6">
                     <span ng-if="error">{{error}}</span>
                     <span ng-if="!error">Loading...</span>
                 </td>

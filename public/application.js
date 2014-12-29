@@ -43,7 +43,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             return state.code === $routeParams.state_code;
         }).pop();
         if(!$scope.state.rivers.length) {
-            $http.get('http://www.mybanjir.com/riverlevel.aspx?state=' + $routeParams.state_code, {
+            $http.get('http://riverlevels.zulfajuniadi.com/rivers/state/' + $routeParams.state_code, {
                 cache: $angularCacheFactory.get('riverDataCache')
             })
             .success(function(rivers){
@@ -197,7 +197,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
     // })
     .filter('fromNow', function($sce){
         return function(val) {
-            console.log(val)
             return moment(val).fromNow();
         };
     })
@@ -218,22 +217,22 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
     })
     .filter('riverStatusClass', function(){
         return function(river) {
-            if(river.RiverLevel <= river.AlertLevel)
+            if(river.current_level <= river.alert_level)
                 return  'label-success';
-            if(river.RiverLevel <= river.WarningLevel)
+            if(river.current_level <= river.warning_level)
                 return 'label-info';
-            if(river.RiverLevel <= river.DangerLevel)
+            if(river.current_level <= river.danger_level)
                 return 'label-warning';
             return 'label-danger';
         };
     })
     .filter('riverStatus', function(){
         return function(river) {
-            if(river.RiverLevel <= river.AlertLevel)
+            if(river.current_level <= river.alert_level)
                 return  'Normal';
-            if(river.RiverLevel <= river.WarningLevel)
+            if(river.current_level <= river.warning_level)
                 return 'Alert';
-            if(river.RiverLevel <= river.DangerLevel)
+            if(river.current_level <= river.danger_level)
                 return 'Warning';
             return 'Danger';
         };
@@ -294,20 +293,20 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
     ])
     .run(function($rootScope, $location, $http, $angularCacheFactory){
         $rootScope.feeds = [];
-        $rootScope.riverLevels = [{name: 'Perlis', code: 'PLS', rivers: []},
-            {name: 'Kedah', code: 'KDH', rivers: []},
-            {name: 'Pulau Pinang', code: 'PNG', rivers: []},
-            {name: 'Perak', code: 'PRK', rivers: []},
-            {name: 'Selangor', code: 'SEL', rivers: []},
-            {name: 'WP Kuala Lumpur', code: 'WLH', rivers: []},
-            {name: 'Negeri Sembilan', code: 'NSN', rivers: []},
-            {name: 'Melaka', code: 'MLK', rivers: []},
-            {name: 'Johor', code: 'JHR', rivers: []},
-            {name: 'Pahang', code: 'PHG', rivers: []},
-            {name: 'Terengganu', code: 'TRG', rivers: []},
-            {name: 'Kelantan', code: 'KEL', rivers: []},
-            {name: 'Sarawak', code: 'SRK', rivers: []},
-            {name: 'Sabah', code: 'SAB', rivers: []},
+        $rootScope.riverLevels = [{name: 'Perlis', code: 'Perlis', rivers: []},
+            {name: 'Kedah', code: 'Kedah', rivers: []},
+            {name: 'Pulau Pinang', code: 'Pulau Pinang', rivers: []},
+            {name: 'Perak', code: 'Perak', rivers: []},
+            {name: 'Selangor', code: 'Selangor', rivers: []},
+            {name: 'WP Kuala Lumpur', code: 'Kuala Lumpur', rivers: []},
+            {name: 'Negeri Sembilan', code: 'Negeri Sembilan', rivers: []},
+            {name: 'Melaka', code: 'Melaka', rivers: []},
+            {name: 'Johor', code: 'Johor', rivers: []},
+            {name: 'Pahang', code: 'Pahang', rivers: []},
+            {name: 'Terengganu', code: 'Terengganu', rivers: []},
+            {name: 'Kelantan', code: 'Kelantan', rivers: []},
+            {name: 'Sarawak', code: 'Sarawak', rivers: []},
+            {name: 'Sabah', code: 'Sabah', rivers: []},
         ];
         $rootScope.weatherForecasts = [{name: 'Perlis', code: 'perlis', forecasts: {}},
             {name: 'Kedah', code: 'kedah', forecasts: {}},
