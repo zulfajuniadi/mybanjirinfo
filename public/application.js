@@ -41,7 +41,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
                         $routeParams.ID, 10);
                 }).pop();
             });
-<<<<<<< HEAD
         }
     }).controller('RiverLevelController', function($scope, $routeParams, $http,
         $angularCacheFactory) {
@@ -49,23 +48,10 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             return state.code === $routeParams.state_code;
         }).pop();
         if (!$scope.state.rivers.length) {
-            $http.get('http://www.mybanjir.com/api/riverlevel/' +
+            $http.get('http://www.mybanjir.com/riverlevel.aspx?state=' +
                 $routeParams.state_code, {
                     cache: $angularCacheFactory.get('riverDataCache')
                 }).success(function(rivers) {
-=======
-        }   
-    })
-    .controller('RiverLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
-        $scope.state = $scope.riverLevels.filter(function(state){
-            return state.code === $routeParams.state_code;
-        }).pop();
-        if(!$scope.state.rivers.length) {
-            $http.get('http://www.mybanjir.com/riverlevel.aspx?state=' + $routeParams.state_code, {
-                cache: $angularCacheFactory.get('riverDataCache')
-            })
-            .success(function(rivers){
->>>>>>> FETCH_HEAD
                 $scope.state.rivers = rivers;
             }).error(function() {
                 $scope.error = 'Feed unavailable at the moment'
@@ -76,13 +62,8 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
                 return state.code === $routeParams.state_code;
             }).pop();
         });
-<<<<<<< HEAD
     }).controller('WeatherForecastController', function($scope, $routeParams,
-        $http, $angularCacheFactory) {
-=======
-    })
-    .controller('WeatherForecastController', function($scope, $routeParams, $http, $angularCacheFactory, $timeout){
->>>>>>> FETCH_HEAD
+        $http, $angularCacheFactory, $timeout) {
         $scope.filteredForecasts = [];
         $scope.dates = [];
         $scope.state = $scope.weatherForecasts.filter(function(state) {
@@ -94,22 +75,17 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
                     cache: 3600000
                 }).success(function(forecasts) {
                 $scope.state.forecasts = forecasts;
-<<<<<<< HEAD
-            }).error(function() {
-=======
-                $timeout(function(){
-                    $.each(forecasts, function(k, v){
+                $timeout(function() {
+                    $.each(forecasts, function(k, v) {
                         new Meteogram(v, k);
                     })
                 }, 500);
-            })
-            .error(function(){
->>>>>>> FETCH_HEAD
+            }).error(function() {
                 $scope.error = 'Feed unavailable at the moment'
             });
         } else {
-            $timeout(function(){
-                $.each($scope.state.forecasts, function(k, v){
+            $timeout(function() {
+                $.each($scope.state.forecasts, function(k, v) {
                     new Meteogram(v, k);
                 })
             }, 500);
@@ -147,15 +123,9 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             return '#!/weatherforecast/' + state.code + '/' + date.format(
                 'YYYY-MM-DD');
         }
-<<<<<<< HEAD
     }).controller('FloodedRoadController', function($scope, $routeParams, $http,
         $angularCacheFactory) {
         $scope.state = $scope.floodedRoads.filter(function(state) {
-=======
-    })
-    .controller('FloodedRoadController', function($scope, $routeParams, $http, $angularCacheFactory){
-        $scope.state = $scope.floodedRoads.filter(function(state){
->>>>>>> FETCH_HEAD
             return state.code === $routeParams.state_code;
         }).pop();
         if (!$scope.state.roads.length) {
@@ -177,29 +147,20 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
                 return state.code === $routeParams.state_code;
             }).pop();
         });
-<<<<<<< HEAD
+    }).controller('DropoffPointsController', function($scope, $http) {
+        if (!$scope.dropoffPoints.length) {
+            $http.get(
+                'http://node.globalresearch.my/mybanjir/ws.DropOffPoints.php?function=getDropOffPoints'
+            ).success(function(data) {
+                $scope.dropoffPoints = data;
+            }).error(function() {
+                $scope.error('Feed unavailable at the moment');
+            });
+        }
     }).controller('RiverLevelsController', function($scope, $routeParams) {}).controller(
         'WeatherForecastsController', function($scope, $routeParams) {}).controller(
         'FrequencyController', function($scope, $routeParams) {}).controller(
         'FloodedRoadsController', function($scope, $routeParams) {})
-=======
-    })
-    .controller('DropoffPointsController',function($scope, $http){
-        if(!$scope.dropoffPoints.length) {
-            $http.get('http://node.globalresearch.my/mybanjir/ws.DropOffPoints.php?function=getDropOffPoints')
-                .success(function(data){
-                    $scope.dropoffPoints = data;
-                })
-                .error(function(){
-                    $scope.error('Feed unavailable at the moment');
-                });
-        }
-    })
-    .controller('RiverLevelsController', function($scope, $routeParams){})
-    .controller('WeatherForecastsController', function($scope, $routeParams){})
-    .controller('FrequencyController', function($scope, $routeParams){})
-    .controller('FloodedRoadsController', function($scope, $routeParams){})
->>>>>>> FETCH_HEAD
     // .controller('RainLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
     //   $scope.state = $scope.rainLevels.filter(function(state){
     //     return state.code === $routeParams.state_code;
@@ -336,7 +297,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
         }
     ]).run(function($rootScope, $location, $http, $angularCacheFactory) {
         $rootScope.feeds = [];
-<<<<<<< HEAD
         $rootScope.riverLevels = [{
             name: 'Perlis',
             code: 'PLS',
@@ -516,56 +476,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             code: '15',
             roads: []
         }, ];
-=======
-        $rootScope.riverLevels = [{name: 'Perlis', code: 'PLS', rivers: []},
-            {name: 'Kedah', code: 'KDH', rivers: []},
-            {name: 'Pulau Pinang', code: 'PNG', rivers: []},
-            {name: 'Perak', code: 'PRK', rivers: []},
-            {name: 'Selangor', code: 'SEL', rivers: []},
-            {name: 'WP Kuala Lumpur', code: 'WLH', rivers: []},
-            {name: 'Negeri Sembilan', code: 'NSN', rivers: []},
-            {name: 'Melaka', code: 'MLK', rivers: []},
-            {name: 'Johor', code: 'JHR', rivers: []},
-            {name: 'Pahang', code: 'PHG', rivers: []},
-            {name: 'Terengganu', code: 'TRG', rivers: []},
-            {name: 'Kelantan', code: 'KEL', rivers: []},
-            {name: 'Sarawak', code: 'SRK', rivers: []},
-            {name: 'Sabah', code: 'SAB', rivers: []},
-        ];
-        $rootScope.weatherForecasts = [{name: 'Perlis', code: 'perlis', forecasts: {}},
-            {name: 'Kedah', code: 'kedah', forecasts: {}},
-            {name: 'Pulau Pinang', code: 'pulau pinang', forecasts: {}},
-            {name: 'Perak', code: 'perak', forecasts: {}},
-            {name: 'Selangor', code: 'selangor', forecasts: {}},
-            {name: 'WP Kuala Lumpur', code: 'kuala lumpur', forecasts: {}},
-            {name: 'Negeri Sembilan', code: 'negeri sembilan', forecasts: {}},
-            {name: 'Melaka', code: 'melaka', forecasts: {}},
-            {name: 'Johor', code: 'johor', forecasts: {}},
-            {name: 'Pahang', code: 'pahang', forecasts: {}},
-            {name: 'Terengganu', code: 'terengganu', forecasts: {}},
-            {name: 'Kelantan', code: 'kelantan', forecasts: {}},
-            {name: 'Sarawak', code: 'sarawak', forecasts: {}},
-            {name: 'Sabah', code: 'sabah', forecasts: {}},
-        ];
-        $rootScope.floodedRoads = [{name: 'Perlis', code: '09', roads: []},
-            {name: 'Kedah', code: '02', roads: []},
-            {name: 'Pulau Pinang', code: '07', roads: []},
-            {name: 'Perak', code: '08', roads: []},
-            {name: 'Selangor', code: '10', roads: []},
-            {name: 'WP Kuala Lumpur', code: '14', roads: []},
-            {name: 'Negeri Sembilan', code: '05', roads: []},
-            {name: 'Melaka', code: '04', roads: []},
-            {name: 'Johor', code: '01', roads: []},
-            {name: 'Pahang', code: '06', roads: []},
-            {name: 'Terengganu', code: '11', roads: []},
-            {name: 'Kelantan', code: '03', roads: []},
-            {name: 'Sarawak', code: '13', roads: []},
-            {name: 'Sabah', code: '12', roads: []},
-            {name: 'WP Putrajaya', code: '16', roads: []},
-            {name: 'WP Labuan', code: '15', roads: []},
-        ];
         $rootScope.dropoffPoints = [];
->>>>>>> FETCH_HEAD
         $rootScope.moment = moment;
         $rootScope.credentials = {
             email: '',
@@ -587,13 +498,8 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             deleteOnExpire: 'aggressive'
         });
         $rootScope.updateFeeds = function() {
-<<<<<<< HEAD
-            $http.get('http://www.mybanjir.com/api/items').success(
+            $http.get('http://www.mybanjir.com/news.aspx').success(
                 function(datas) {
-=======
-            $http.get('http://www.mybanjir.com/news.aspx')
-                .success(function(datas){
->>>>>>> FETCH_HEAD
                     $rootScope.feeds = datas;
                     $rootScope.locations = datas.map(function(data) {
                         if (!data.Location) return 'others'
@@ -604,14 +510,9 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap',
             })
         }
         $rootScope.nl2br = function(str, is_xhtml) {
-<<<<<<< HEAD
-            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ?
-                '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
-            return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g,
-                '$1' + breakTag + '$2');
-=======
-            return str.trim().split("\r\n").filter(function(text){return text.trim()}).join("<br/><br/>");
->>>>>>> FETCH_HEAD
+            return str.trim().split("\r\n").filter(function(text) {
+                return text.trim()
+            }).join("<br/><br/>");
         }
         $rootScope.slugify = function(str) {
             str = str.replace(/^\s+|\s+$/g, '').toLowerCase();
