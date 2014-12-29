@@ -1,23 +1,18 @@
 <a href="#!/feeds">Back</a>
 <div ng-if="feed">
     <h1>{{feed.Title}}</h1>
-    <div ng-if="feed.Image">
-        <div class="thumbnail">
-            <img class="img-responsive" src="{{feed.Image}}" alt="">
-        </div>
-        <p class="text-justified" ng-bind-html="nl2br(feed.Body) | rawHtml"></p>
-    </div>
-    <div ng-if="!feed.Image">
-        <p class="text-justified" ng-bind-html="nl2br(feed.Body) | rawHtml"></p>
-    </div>
+    <hr>
+    <span ng-if="feed.Image" class="thumbnail pull-left">
+        <img class="img-responsive" src="{{feed.Image}}" alt="">
+    </span>
+    <p class="text-justified" ng-bind-html="nl2br(feed.Body) | rawHtml"></p>
     <br>
-    
     <div ng-if="feed.Url">
         <a class="btn btn-primary btn-sm" target="blank" href="{{feed.Url}}">View Article</a>
         <br>
         <br>
     </div>
-    <p class="text-muted"><i>{{moment(feed.Timestamp).fromNow()}}
+    <p class="text-muted"><i>{{feed.Timestamp | fromNow}}
         / <a href="#!/feeds/Source::{{(feed.Source || 'others') | encodeUrl}}">{{(feed.Source || 'others')}}</a>
         / <a href="#!/feeds/Location::{{(feed.Location || 'others') | encodeUrl}}">{{(feed.Location || 'others') | titleCase}}</a>
     </i></p>

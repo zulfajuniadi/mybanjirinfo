@@ -1,0 +1,47 @@
+<a href="#!/feeds">Back</a>
+<h1>Drop Off Points</h1>
+<br>
+<div>
+    <h4>
+        <i>
+            Jika anda ingin menderma barangan dan keperluan asas untuk mangsa mangsa banjir, sila pastikan ianya dimuatkan didalam bekas atau pun kotak yang bersesuaian dan dilabelkan.
+            <br>
+            <br>
+            Anda dijemput untuk menghantarkanya di TUDM subang, yang beroperasi 24 jam
+        </i>
+    </h4>
+    <br>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Address</th>
+                <th>Contact</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody ng-if="dropoffPoints.length">
+            <tr ng-repeat="dropoffpoint in dropoffPoints | filter:{status:'active'}">
+                <td>
+                    <b>{{dropoffpoint.name}}</b><br>
+                    {{dropoffpoint.address}}</td>
+                <td>
+                    {{dropoffpoint.contact_no}}
+                    <span ng-if="dropoffpoint.contact_person"><br>{{dropoffpoint.contact_person}}</span>
+                </td>
+                <td>{{dropoffpoint.description}}</td>
+            </tr>
+        </tbody>
+        <tbody ng-if="!dropoffPoints.length">
+            <tr>
+                <td colspan="5">
+                    <span ng-if="error">{{error}}</span>
+                    <span ng-if="!error">Loading...</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p class="lead text-center">
+    To add more to this list, please contact<br/><a href="mailto:syahrul@mymagic.my">syahrul@mymagic.my</a> or <a href="mailto:amir@mymagic.my">amir@mymagic.my</a>
+</p>

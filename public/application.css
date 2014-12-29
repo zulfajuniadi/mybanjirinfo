@@ -6627,3 +6627,16 @@ table.table th {
   background-position: center center;
   background-size: cover;
 }
+input[type=search] {
+  padding: 8px 12px;
+  border: 1px solid #CCC;
+}
+#feeds .thumbnail {
+  margin-bottom: 0px;
+  margin-top: 2px;
+  margin-right: 8px;
+  display: inline-block;
+}
+#feeds .media .thumbnail {
+  margin-top: 21px;
+}
