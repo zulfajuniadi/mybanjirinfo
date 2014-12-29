@@ -377,9 +377,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 })
         }
         $rootScope.nl2br = function(str, is_xhtml) {
-            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
-            return (str + '')
-                .replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+            return str.trim().split("\r\n").filter(function(text){return text.trim()}).join("<br/><br/>");
         }
         $rootScope.slugify = function(str) {
             str = str.replace(/^\s+|\s+$/g, '').toLowerCase();
