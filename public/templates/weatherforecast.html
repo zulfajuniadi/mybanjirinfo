@@ -40,4 +40,7 @@
             </tr>
         </tbody>
     </table>
+    <div ng-repeat="forecast in state.forecasts">
+        <div id="{{forecast.location}}" style="box-sizing: border-box; height: 310px; margin: 0 auto"></div>
+    </div>
 </div>
