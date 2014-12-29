@@ -36,14 +36,14 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                     return feed.ID === parseInt($routeParams.ID, 10);
                 }).pop();
             });
-        }
+        }   
     })
     .controller('RiverLevelController', function($scope, $routeParams, $http, $angularCacheFactory){
         $scope.state = $scope.riverLevels.filter(function(state){
             return state.code === $routeParams.state_code;
         }).pop();
         if(!$scope.state.rivers.length) {
-            $http.get('http://www.mybanjir.com/api/riverlevel/' + $routeParams.state_code, {
+            $http.get('http://www.mybanjir.com/riverlevel.aspx?state=' + $routeParams.state_code, {
                 cache: $angularCacheFactory.get('riverDataCache')
             })
             .success(function(rivers){
@@ -59,7 +59,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             }).pop();
         });
     })
-    .controller('WeatherForecastController', function($scope, $routeParams, $http, $angularCacheFactory){
+    .controller('WeatherForecastController', function($scope, $routeParams, $http, $angularCacheFactory, $timeout){
         $scope.filteredForecasts = [];
         $scope.dates = [];
         $scope.state = $scope.weatherForecasts.filter(function(state){
@@ -71,10 +71,21 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             })
             .success(function(forecasts){
                 $scope.state.forecasts = forecasts;
+                $timeout(function(){
+                    $.each(forecasts, function(k, v){
+                        new Meteogram(v, k);
+                    })
+                }, 500);
             })
             .error(function(){
                 $scope.error = 'Feed unavailable at the moment'
             });
+        } else {
+            $timeout(function(){
+                $.each($scope.state.forecasts, function(k, v){
+                    new Meteogram(v, k);
+                })
+            }, 500);
         }
         $scope.setFilteredFeeds = function() {
             if(Object.keys($scope.state.forecasts).length) {
@@ -103,7 +114,6 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
         $scope.dateUrl = function(state, date) {
             return '#!/weatherforecast/' + state.code + '/' + date.format('YYYY-MM-DD');
         }
-
     })
     .controller('FloodedRoadController', function($scope, $routeParams, $http, $angularCacheFactory){
         $scope.state = $scope.floodedRoads.filter(function(state){
@@ -127,6 +137,17 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 return state.code === $routeParams.state_code;
             }).pop();
         });
+    })
+    .controller('DropoffPointsController',function($scope, $http){
+        if(!$scope.dropoffPoints.length) {
+            $http.get('http://node.globalresearch.my/mybanjir/ws.DropOffPoints.php?function=getDropOffPoints')
+                .success(function(data){
+                    $scope.dropoffPoints = data;
+                })
+                .error(function(){
+                    $scope.error('Feed unavailable at the moment');
+                });
+        }
     })
     .controller('RiverLevelsController', function($scope, $routeParams){})
     .controller('WeatherForecastsController', function($scope, $routeParams){})
@@ -233,6 +254,10 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                 templateUrl: 'templates/riverlevels.html',
                 controller: 'RiverLevelsController'
             }).
+            when('/dropoffpoints', {
+                templateUrl: 'templates/dropoffpoints.html',
+                controller: 'DropoffPointsController'
+            }).
             when('/riverlevel/:state_code', {
                 templateUrl: 'templates/riverlevel.html',
                 controller: 'RiverLevelController'
@@ -256,6 +281,10 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             when('/frequencies', {
                 templateUrl: 'templates/frequencies.html',
                 controller: 'FrequencyController'
+            }).
+            when('/insta', {
+                templateUrl: 'templates/insta.html',
+                controller: 'InstagramController'
             }).
             otherwise({
                 redirectTo: '/feeds'
@@ -312,6 +341,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             {name: 'WP Putrajaya', code: '16', roads: []},
             {name: 'WP Labuan', code: '15', roads: []},
         ];
+        $rootScope.dropoffPoints = [];
         $rootScope.moment = moment;
         $rootScope.credentials = {email: '', password: ''};
 
@@ -333,7 +363,7 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
             deleteOnExpire: 'aggressive'
         });
         $rootScope.updateFeeds = function() {
-            $http.get('http://www.mybanjir.com/api/items')
+            $http.get('http://www.mybanjir.com/news.aspx')
                 .success(function(datas){
                     $rootScope.feeds = datas;
                     $rootScope.locations = datas.map(function(data){
