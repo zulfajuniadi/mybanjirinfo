@@ -379,8 +379,8 @@ var app = angular.module('mybanjir', ['ngRoute', 'ngDisqus', 'ui.bootstrap', 'jm
                     // console.log()
                 })
         }
-        $rootScope.nl2br = function(str, is_xhtml) {
-            return str.trim().split("\r\n").filter(function(text){return text.trim()}).join("<br/><br/>");
+        $rootScope.nl2br = function(str) {
+            return str.trim().split(/\r\n|\r\n|\n|\r/g).filter(function(text){return text.trim()}).join('<br\><br\>');
         }
         $rootScope.slugify = function(str) {
             str = str.replace(/^\s+|\s+$/g, '').toLowerCase();
